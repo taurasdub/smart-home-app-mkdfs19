@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set background color for body */
+body,
+html {
+  background-color: #192033 !important;
+}
+
+.container {
+  max-width: 1240px;
+  width: 100%;
+  padding-inline: 20px;
+  margin: auto;
+}
