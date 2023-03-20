@@ -15,7 +15,7 @@ export const devicesMock = {
           state: "off",
         },
         {
-          name: "TV",
+          name: "TV 2",
           type: "display",
           state: "off",
         },
