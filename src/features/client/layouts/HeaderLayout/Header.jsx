@@ -1,11 +1,24 @@
 import { Box, Button, Heading } from "@chakra-ui/react";
 import React from "react";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Flex } from "@chakra-ui/react";
 import "./index.scss";
+import { UserAuth } from "../../../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
   let currentHour = new Date().getHours();
+  const { logout } = UserAuth();
+  const navigate = useNavigate();
+
+  const handleLogOut = async () => {
+    try {
+      await logout();
+      navigate("/signin");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <Flex
@@ -35,6 +48,7 @@ function Header() {
         <Link to="/lights">
           <Button>Lights</Button>
         </Link>
+        <Button onClick={handleLogOut}>Log out</Button>
       </Box>
     </Flex>
   );

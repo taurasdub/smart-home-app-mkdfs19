@@ -5,21 +5,65 @@ import { Route, Routes } from "react-router-dom";
 import FloorPlan from "../../components/FloorPlan/FloorPlan";
 import AllDevices from "../../components/AllDevices/AllDevices";
 import Lights from "../../components/Lights/Lights";
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Container, Flex } from "@chakra-ui/react";
 import RoomDetails from "../../components/RoomDetails/RoomDetails";
+import SignUp from "../SignUpPage/SignUp";
+import { UserAuth } from "../../../../context/AuthContext";
+import SignIn from "../SignInPage/SignIn";
+import ProtectedRoute from "../../../../config/ProtectedRoute";
 
 function ClientLanding() {
+  const { user } = UserAuth();
+
   return (
     <Container maxW="1240px">
-      <Flex justifyContent="space-between" height="17vh" mt={5} mb={5} gap={5}>
-        <Header />
-        <Weather />
-      </Flex>
+      {user && (
+        <Flex
+          justifyContent="space-between"
+          height="17vh"
+          mt={5}
+          mb={5}
+          gap={5}
+        >
+          <Header />
+          <Weather />
+        </Flex>
+      )}
       <Routes>
-        <Route path="/" element={<FloorPlan />} />
-        <Route path="/all-devices" element={<AllDevices />} />
-        <Route path="/lights" element={<Lights />} />
-        <Route path=":id" element={<RoomDetails />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <FloorPlan />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-devices"
+          element={
+            <ProtectedRoute>
+              <AllDevices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lights"
+          element={
+            <ProtectedRoute>
+              <Lights />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path=":id"
+          element={
+            <ProtectedRoute>
+              <RoomDetails />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/register" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </Container>
   );

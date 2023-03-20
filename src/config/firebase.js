@@ -1,15 +1,19 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getDatabase } from "firebase/database";
+import "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAgb8E-bo4PhpZcJGJqL015-Q6OPyi3pk0",
-  authDomain: "smart-home-af0e2.firebaseapp.com",
-  projectId: "smart-home-af0e2",
-  storageBucket: "smart-home-af0e2.appspot.com",
-  messagingSenderId: "1037475652270",
-  appId: "1:1037475652270:web:f0f8b83af4ed7bf5b8833f",
-  measurementId: "G-DXSZKBZJET",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+export const auth = getAuth(app);
+export const db = getDatabase(app);
+export default app;

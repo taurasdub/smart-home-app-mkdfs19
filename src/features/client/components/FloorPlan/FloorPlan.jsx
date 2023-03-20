@@ -3,6 +3,8 @@ import React from "react";
 import MainContent from "../../layouts/MainContentLayout/MainContent";
 import { devicesMock } from "../../mocks/devicesMock";
 import { useNavigate } from "react-router-dom";
+// import { db } from "../../../../config/firebase";
+// import { uid } from "uid";
 
 function FloorPlan() {
   const navigate = useNavigate();
