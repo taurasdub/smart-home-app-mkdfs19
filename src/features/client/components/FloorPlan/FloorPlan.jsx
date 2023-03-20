@@ -11,12 +11,10 @@ function FloorPlan() {
 
   const handleDeviceClick = (e) => {
     e.stopPropagation();
-    console.log("Device is clicked");
   };
 
   const handleRoomClick = (e, roomId) => {
     e.stopPropagation();
-    console.log("Room is clicked");
     navigate(`${roomId}`);
   };
 

@@ -32,7 +32,6 @@ function SignUp() {
       navigate("/");
     } catch (error) {
       console.log(error.message);
-      setError(error.message);
     }
   };
 
@@ -43,9 +42,12 @@ function SignUp() {
         <Box
           sx={{
             marginTop: 8,
+            padding: 2,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            backgroundColor: "#2A3F74",
+            borderRadius: "10px",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>

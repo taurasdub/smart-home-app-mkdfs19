@@ -5,7 +5,6 @@ import MainContent from "../../layouts/MainContentLayout/MainContent";
 
 function RoomDetails() {
   const { id } = useParams();
-  console.log(id);
   const room = devicesMock.rooms.find((room) => room.id == id);
 
   return (

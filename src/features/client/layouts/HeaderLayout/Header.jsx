@@ -15,9 +15,7 @@ function Header() {
     try {
       await logout();
       navigate("/signin");
-    } catch (error) {
-      console.log(error.message);
-    }
+    } catch (error) {}
   };
 
   return (

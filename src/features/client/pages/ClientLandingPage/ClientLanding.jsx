@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../layouts/HeaderLayout/Header";
 import Weather from "../../layouts/WeatherLayout/Weather";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import FloorPlan from "../../components/FloorPlan/FloorPlan";
 import AllDevices from "../../components/AllDevices/AllDevices";
 import Lights from "../../components/Lights/Lights";
@@ -62,8 +62,14 @@ function ClientLanding() {
             </ProtectedRoute>
           }
         />
-        <Route path="/register" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/" /> : <SignUp />}
+        />
+        <Route
+          path="/signin"
+          element={user ? <Navigate to="/" /> : <SignIn />}
+        />
       </Routes>
     </Container>
   );
