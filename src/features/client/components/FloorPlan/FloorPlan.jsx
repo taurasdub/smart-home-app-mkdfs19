@@ -3,8 +3,7 @@ import React from "react";
 import MainContent from "../../layouts/MainContentLayout/MainContent";
 import { devicesMock } from "../../mocks/devicesMock";
 import { useNavigate } from "react-router-dom";
-// import { db } from "../../../../config/firebase";
-// import { uid } from "uid";
+import DeviceControl from "../DeviceControl/DeviceControl";
 
 function FloorPlan() {
   const navigate = useNavigate();
@@ -50,7 +49,8 @@ function FloorPlan() {
                     marginLeft="5px"
                   >
                     <Text textAlign="center">
-                      {device.name} | {device.state}
+                      {device.name}
+                      <DeviceControl mqttDevice={device.name} />
                     </Text>
                   </Box>
                 ))}
