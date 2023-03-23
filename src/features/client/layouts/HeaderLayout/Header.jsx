@@ -5,6 +5,7 @@ import { Flex } from "@chakra-ui/react";
 import "./index.scss";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import AddDevice from "../../components/AddDevice/AddDevice";
 
 function Header() {
   let currentHour = new Date().getHours();
@@ -47,6 +48,7 @@ function Header() {
           <Button>Lights</Button>
         </Link>
         <Button onClick={handleLogOut}>Log out</Button>
+        <AddDevice />
       </Box>
     </Flex>
   );
