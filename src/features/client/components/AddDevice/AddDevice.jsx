@@ -16,59 +16,103 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-
-import { devicesMock } from "../../mocks/devicesMock";
+import { useEffect } from "react";
+import { addDevice } from "../../../../store/reducers/deviceSlice";
+import { useDispatch } from "react-redux";
+import { typeMock } from "../../mocks/typeMock";
+import { UserAuth } from "../../../../context/AuthContext";
+import { useSelector } from "react-redux";
+import { getRooms } from "../../../../store/reducers/roomSlice";
+import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
 
 function AddDevice() {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [deviceType, setDeviceType] = useState("sensor");
+  const [deviceType, setDeviceType] = useState("switch");
   const { register, handleSubmit } = useForm();
+  const { user } = UserAuth();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  useEffect(() => {
+    dispatch(getRooms(user));
+  }, [user]);
+
+  const rooms = useSelector((state) => state.room.rooms);
+
+  const onSubmit = async (data, type) => {
+    dispatch(
+      addDevice({
+        user,
+        data: {
+          initValue: data.initValue,
+          maxValue: data.maxValue,
+          mqttTopic: data.mqttTopic,
+          room: data.room,
+          unit: data.unit,
+          deviceName: data.deviceName,
+          type: type,
+          onText: data.onText,
+          offText: data.offText,
+        },
+      })
+    );
     onClose();
   };
+
   return (
     <React.Fragment>
-      <Button onClick={onOpen}>Add Device</Button>
+      <Button onClick={onOpen} mr={"10px"}>
+        Add Device
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((data) => onSubmit(data, deviceType))}>
           <ModalContent maxW="90%">
             <ModalHeader>Add Device Form</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <FormLabel>Choose a room</FormLabel>
+              {rooms.length > 0 ? (
+                <RadioGroup>
+                  <HStack>
+                    {rooms.map((room) => (
+                      <Radio
+                        key={room.name}
+                        value={room.name}
+                        {...register("room")}
+                      >
+                        {room.name}
+                      </Radio>
+                    ))}
+                  </HStack>
+                </RadioGroup>
+              ) : (
+                <div>
+                  You don't have a floor plan set up yet. If you want device to
+                  be assigned to the room instantly, you should click "Add Floor
+                  Plan" button below.
+                  <AddFloorPlan />
+                </div>
+              )}
+              <FormLabel>Choose device type</FormLabel>
               <RadioGroup>
                 <HStack>
-                  {devicesMock.rooms.map((room) => (
+                  {typeMock.types.map((type) => (
                     <Radio
-                      key={room.name}
-                      value={room.name}
-                      {...register("room")}
+                      key={type.name}
+                      value={type.name}
+                      {...register("type")}
+                      onChange={() => setDeviceType(type.name)}
                     >
-                      {room.name}
+                      {type.name}
                     </Radio>
                   ))}
                 </HStack>
               </RadioGroup>
-              <Button
-                onClick={() => setDeviceType("sensor")}
-                bg={deviceType === "sensor" && "green.100"}
-              >
-                Sensor
-              </Button>
-              <Button
-                onClick={() => setDeviceType("switch")}
-                bg={deviceType === "switch" && "green.100"}
-              >
-                Switch
-              </Button>
               <FormLabel>Widget Name</FormLabel>
               <Input
                 type="text"
                 placeholder="Enter widget name"
-                {...register("widgetName")}
+                {...register("deviceName")}
               />
               <FormLabel>MQTT Topic Name</FormLabel>
               <Input

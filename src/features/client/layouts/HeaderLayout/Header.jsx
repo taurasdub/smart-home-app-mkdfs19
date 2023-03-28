@@ -47,8 +47,8 @@ function Header() {
         <Link to="/lights">
           <Button>Lights</Button>
         </Link>
-        <Button onClick={handleLogOut}>Log out</Button>
         <AddDevice />
+        <Button onClick={handleLogOut}>Log out</Button>
       </Box>
     </Flex>
   );

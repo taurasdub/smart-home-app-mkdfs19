@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../../../config/firebase";
 
 const theme = createTheme();
 
@@ -28,7 +30,10 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      await createUser(email, password);
+      const user = await createUser(email, password);
+      await setDoc(doc(db, "users", user.user.uid), {
+        email,
+      });
       navigate("/");
     } catch (error) {
       console.log(error.message);
@@ -50,12 +55,9 @@ function SignUp() {
             borderRadius: "10px",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#192033" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
           <Box
             component="form"
             noValidate

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
+
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
@@ -50,12 +50,9 @@ function SignIn() {
             borderRadius: "10px",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "#192033" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign In
-          </Typography>
           <Box
             component="form"
             noValidate
@@ -70,7 +67,6 @@ function SignIn() {
                   id="email"
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
