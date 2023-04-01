@@ -1,23 +1,27 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Link as ChakraLink,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useState } from "react";
-import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { UserAuth } from "../../../../context/AuthContext";
+import { Link as RouterLink } from "react-router-dom";
+import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
 
-const theme = createTheme();
-
-function SignIn() {
+export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const { signIn } = UserAuth();
 
@@ -30,78 +34,87 @@ function SignIn() {
       await signIn(email, password);
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      setError("Invalid email or password");
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"} color="white">
+            Sign in to your account
+          </Heading>
+          <Text fontSize={"lg"} color={"gray.400"}>
+            to enjoy all of our{" "}
+            <ChakraLink color={"blue.400"}>features</ChakraLink> ✌️
+          </Text>
+        </Stack>
+        {error && (
+          <Text color="red.500">
+            <Alert status="error">
+              <AlertIcon />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </Text>
+        )}
         <Box
-          sx={{
-            marginTop: 8,
-            padding: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "#2A3F74",
-            borderRadius: "10px",
-          }}
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
+          p={8}
+          w="430px"
         >
-          <Avatar sx={{ m: 1, bgcolor: "#192033" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSignIn}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
+          <form onSubmit={handleSignIn}>
+            <Stack spacing={4}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
                   label="Email Address"
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
                   name="password"
                   label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/register" variant="body2">
-                  Don't have an account? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
+              </FormControl>
+
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: "column", sm: "row" }}
+                  align={"start"}
+                  justify={"space-between"}
+                >
+                  <Checkbox>Remember me</Checkbox>
+                  <ChakraLink color={"blue.400"}>Forgot password?</ChakraLink>
+                </Stack>
+                <RouterLink color={"blue.400"} to="/register" variant="body2">
+                  <ChakraLink color={"blue.400"}>
+                    Don't have an account? Sign Up
+                  </ChakraLink>
+                </RouterLink>
+                <Button
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  type="submit"
+                >
+                  Sign in
+                </Button>
+              </Stack>
+            </Stack>
+          </form>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Stack>
+    </Flex>
   );
 }
-
-export default SignIn;

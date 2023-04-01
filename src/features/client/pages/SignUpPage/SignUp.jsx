@@ -1,25 +1,31 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import { Link } from "react-router-dom";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  Flex,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Stack,
+  Link as ChakraLink,
+  Button,
+  Heading,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useState } from "react";
-import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { UserAuth } from "../../../../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../../config/firebase";
-
-const theme = createTheme();
+import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const { createUser } = UserAuth();
 
@@ -27,7 +33,10 @@ function SignUp() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
     try {
       const user = await createUser(email, password);
       await setDoc(doc(db, "users", user.user.uid), {
@@ -35,76 +44,89 @@ function SignUp() {
       });
       navigate("/");
     } catch (error) {
-      console.log(error.message);
+      if (error.code === "auth/invalid-email") {
+        setError("Email is invalid!");
+      } else if (error.code === "auth/email-already-in-use") {
+        setError("Email already in use!");
+      } else if (error.code === "auth/weak-password") {
+        setError("Password is too weak! (at least 6 symbols)");
+      }
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"} color="white">
+            Sign Up
+          </Heading>
+        </Stack>
+        {error && (
+          <Text color="red.500">
+            <Alert status="error">
+              <AlertIcon />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </Text>
+        )}
         <Box
-          sx={{
-            marginTop: 8,
-            padding: 2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "#2A3F74",
-            borderRadius: "10px",
-          }}
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
+          p={8}
+          w="430px"
         >
-          <Avatar sx={{ m: 1, bgcolor: "#192033" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSignUp}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
+          <form onSubmit={handleSignUp}>
+            <Stack spacing={4}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
                   label="Email Address"
                   name="email"
-                  autoComplete="email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
                   name="password"
                   label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link to="/signin">Already have an account? Sign in</Link>
-              </Grid>
-            </Grid>
-          </Box>
+              </FormControl>
+              <FormControl id="confirm-password">
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  type="password"
+                  name="confirm-password"
+                  label="Confirm Password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <RouterLink color={"blue.400"} to="/signin" variant="body2">
+                  <ChakraLink color={"blue.400"}>
+                    Already have an account? Sign In
+                  </ChakraLink>
+                </RouterLink>
+                <Button
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  type="submit"
+                >
+                  Sign Up
+                </Button>
+              </Stack>
+            </Stack>
+          </form>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Stack>
+    </Flex>
   );
 }
 

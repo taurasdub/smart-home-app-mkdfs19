@@ -83,17 +83,25 @@ export const deleteDevice = createAsyncThunk(
 
 const initialState = {
   devices: [],
+  showAlert: false,
+  deviceAddedTimerId: null,
 };
 
 const deviceSlice = createSlice({
   name: "device",
   initialState,
+  reducers: {
+    deviceHideAlert(state) {
+      state.showAlert = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getDevices.fulfilled, (state, action) => {
       state.devices = action.payload.devices;
     }),
       builder.addCase(addDevice.fulfilled, (state, action) => {
         state.devices.push(action.payload.data);
+        state.showAlert = true;
       }),
       builder.addCase(updateDevice.fulfilled, (state, action) => {
         const { deviceId, data } = action.payload;
@@ -118,4 +126,5 @@ const deviceSlice = createSlice({
   },
 });
 
+export const { deviceHideAlert } = deviceSlice.actions;
 export default deviceSlice.reducer;

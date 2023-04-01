@@ -24,6 +24,8 @@ import { UserAuth } from "../../../../context/AuthContext";
 import { useSelector } from "react-redux";
 import { getRooms } from "../../../../store/reducers/roomSlice";
 import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
+import { deviceHideAlert } from "../../../../store/reducers/deviceSlice";
+import { Box } from "@chakra-ui/react";
 
 function AddDevice() {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ function AddDevice() {
   const [deviceType, setDeviceType] = useState("switch");
   const { register, handleSubmit } = useForm();
   const { user } = UserAuth();
+  const showAlert = useSelector((state) => state.device.showAlert); // new
 
   useEffect(() => {
     dispatch(getRooms(user));
@@ -54,7 +57,7 @@ function AddDevice() {
           }),
         },
       })
-    );
+    ).then(() => setTimeout(() => dispatch(deviceHideAlert()), 4000));
     onClose();
   };
 
@@ -153,6 +156,20 @@ function AddDevice() {
           </ModalContent>
         </form>
       </Modal>
+      {showAlert && (
+        <Box
+          position="absolute"
+          top="5%"
+          right="5%"
+          p="3"
+          bg="green.400"
+          color="white"
+          borderRadius="md"
+          boxShadow="md"
+        >
+          Device was successfully added
+        </Box>
+      )}
     </React.Fragment>
   );
 }
