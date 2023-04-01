@@ -28,7 +28,6 @@ function AddFloorPlan() {
   const { user } = UserAuth();
 
   const onSubmit = async () => {
-    console.log(rooms);
     const newRooms = rooms.map((room) => ({ name: room.name }));
     newRooms.forEach((room) => dispatch(addFloorPlan({ user, data: room })));
     onClose();

@@ -38,24 +38,28 @@ function AddDevice() {
 
   const rooms = useSelector((state) => state.room.rooms);
 
-  const onSubmit = async (data, type) => {
+  const onSubmit = async (data) => {
     dispatch(
       addDevice({
         user,
+        deviceType,
         data: {
-          initValue: data.initValue,
-          maxValue: data.maxValue,
           mqttTopic: data.mqttTopic,
-          room: data.room,
-          unit: data.unit,
+          room: data.room || "",
           deviceName: data.deviceName,
-          type: type,
-          onText: data.onText,
-          offText: data.offText,
+          type: deviceType || "",
+          ...(deviceType === "sensor" && {
+            unit: data.unit,
+            maxValue: data.maxValue,
+          }),
         },
       })
     );
     onClose();
+  };
+
+  const handleDeviceChange = (type) => {
+    setDeviceType(type.name);
   };
 
   return (
@@ -65,7 +69,7 @@ function AddDevice() {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <form onSubmit={handleSubmit((data) => onSubmit(data, deviceType))}>
+        <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <ModalContent maxW="90%">
             <ModalHeader>Add Device Form</ModalHeader>
             <ModalCloseButton />
@@ -101,7 +105,7 @@ function AddDevice() {
                       key={type.name}
                       value={type.name}
                       {...register("type")}
-                      onChange={() => setDeviceType(type.name)}
+                      onChange={() => handleDeviceChange(type)}
                     >
                       {type.name}
                     </Radio>
@@ -120,14 +124,8 @@ function AddDevice() {
                 placeholder="Enter target MQTT topic"
                 {...register("mqttTopic")}
               />
-              {deviceType === "sensor" ? (
+              {deviceType === "sensor" && (
                 <React.Fragment>
-                  <FormLabel>Initial value</FormLabel>
-                  <Input
-                    type="number"
-                    placeholder="Enter a numeric value only"
-                    {...register("initValue")}
-                  />
                   <FormLabel>Unit</FormLabel>
                   <Input
                     type="text"
@@ -139,27 +137,6 @@ function AddDevice() {
                     type="number"
                     placeholder="Enter max allowable value"
                     {...register("maxValue")}
-                  />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <FormLabel>Initial Value</FormLabel>
-                  <Input
-                    type="number"
-                    placeholder="Enter a value from 0 to 1 only"
-                    {...register("initValue")}
-                  />
-                  <FormLabel>ON Text</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Enter ON text"
-                    {...register("onText")}
-                  />
-                  <FormLabel>OFF Text</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Enter OFF text"
-                    {...register("offText")}
                   />
                 </React.Fragment>
               )}

@@ -6,6 +6,7 @@ import "./index.scss";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import AddDevice from "../../components/AddDevice/AddDevice";
+import { SettingsIcon } from "@chakra-ui/icons";
 
 function Header() {
   let currentHour = new Date().getHours();
@@ -44,10 +45,16 @@ function Header() {
         <Link to="/all-devices">
           <Button>All devices</Button>
         </Link>
-        <Link to="/lights">
-          <Button>Lights</Button>
+        <Link to="/switches">
+          <Button>Switches</Button>
+        </Link>
+        <Link to="/sensors">
+          <Button>Sensors</Button>
         </Link>
         <AddDevice />
+        <Link to="/settings">
+          <Button>Settings</Button>
+        </Link>
         <Button onClick={handleLogOut}>Log out</Button>
       </Box>
     </Flex>

@@ -11,6 +11,9 @@ import SignUp from "../SignUpPage/SignUp";
 import { UserAuth } from "../../../../context/AuthContext";
 import SignIn from "../SignInPage/SignIn";
 import ProtectedRoute from "../../../../config/ProtectedRoute";
+import Switches from "../../components/Switches/Switches";
+import Sensors from "../../components/Sensors/Sensors";
+import UserSettings from "../../components/UserSettings/UserSettings";
 
 function ClientLanding() {
   const { user } = UserAuth();
@@ -51,6 +54,30 @@ function ClientLanding() {
           element={
             <ProtectedRoute>
               <Lights />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/switches"
+          element={
+            <ProtectedRoute>
+              <Switches />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/sensors"
+          element={
+            <ProtectedRoute>
+              <Sensors />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <UserSettings />
             </ProtectedRoute>
           }
         />

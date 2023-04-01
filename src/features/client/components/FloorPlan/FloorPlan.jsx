@@ -13,8 +13,6 @@ function FloorPlan() {
   const dispatch = useDispatch();
   const { user } = UserAuth();
 
-  console.log(user);
-
   useEffect(() => {
     dispatch(getRooms(user));
     dispatch(getDevices(user));

@@ -18,8 +18,6 @@ const Weather = () => {
           console.error(error);
         }
       );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
     }
   }, []);
 
