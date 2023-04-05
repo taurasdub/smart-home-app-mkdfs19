@@ -1,0 +1,14 @@
+.drop-down {
+  animation: drop 0.2s ease-in-out forwards;
+}
+
+@keyframes drop {
+  0% {
+    top: -100%;
+    opacity: 0;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+  }
+}

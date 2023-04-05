@@ -14,20 +14,23 @@ import ProtectedRoute from "../../../../config/ProtectedRoute";
 import Switches from "../../components/Switches/Switches";
 import Sensors from "../../components/Sensors/Sensors";
 import UserSettings from "../../components/UserSettings/UserSettings";
+import Features from "../../components/Features/Features";
+import { useSelector } from "react-redux";
+import { Box } from "@chakra-ui/react";
 
 function ClientLanding() {
   const { user } = UserAuth();
+  const deletedFloorPlanSuccessAlert = useSelector(
+    (state) => state.room.deletedFloorPlanSuccessAlert
+  );
+  const addedFloorPlanSuccessAlert = useSelector(
+    (state) => state.room.addedFloorPlanSuccessAlert
+  );
 
   return (
     <Container maxW="1240px">
       {user && (
-        <Flex
-          justifyContent="space-between"
-          height="17vh"
-          mt={5}
-          mb={5}
-          gap={5}
-        >
+        <Flex justifyContent="space-between" mt={5} mb={5} gap={5}>
           <Header />
           <Weather />
         </Flex>
@@ -97,7 +100,38 @@ function ClientLanding() {
           path="/signin"
           element={user ? <Navigate to="/" /> : <SignIn />}
         />
+        <Route path="/features" element={<Features />} />
       </Routes>
+      {deletedFloorPlanSuccessAlert && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          w="100%"
+          bg="green.400"
+          textAlign="center"
+          p={3}
+          className="drop-down"
+        >
+          Floor plan was deleted{" "}
+          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
+        </Box>
+      )}
+      {addedFloorPlanSuccessAlert && (
+        <Box
+          position="fixed"
+          top="0"
+          left="0"
+          w="100%"
+          bg="green.400"
+          textAlign="center"
+          p={3}
+          className="drop-down"
+        >
+          Floor plan was added{" "}
+          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
+        </Box>
+      )}
     </Container>
   );
 }

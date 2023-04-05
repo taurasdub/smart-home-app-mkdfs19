@@ -83,8 +83,9 @@ export const deleteDevice = createAsyncThunk(
 
 const initialState = {
   devices: [],
-  showAlert: false,
-  deviceAddedTimerId: null,
+  addedDeviceSuccessAlert: false,
+  updatedDeviceSuccessAlert: false,
+  deletedDeviceSuccessAlert: false,
 };
 
 const deviceSlice = createSlice({
@@ -92,37 +93,40 @@ const deviceSlice = createSlice({
   initialState,
   reducers: {
     deviceHideAlert(state) {
-      state.showAlert = false;
+      state.addedDeviceSuccessAlert = false;
+      state.updatedDeviceSuccessAlert = false;
+      state.deletedDeviceSuccessAlert = false;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(getDevices.fulfilled, (state, action) => {
       state.devices = action.payload.devices;
-    }),
-      builder.addCase(addDevice.fulfilled, (state, action) => {
-        state.devices.push(action.payload.data);
-        state.showAlert = true;
-      }),
-      builder.addCase(updateDevice.fulfilled, (state, action) => {
-        const { deviceId, data } = action.payload;
+    });
+    builder.addCase(addDevice.fulfilled, (state, action) => {
+      state.devices.push(action.payload.data);
+      state.addedDeviceSuccessAlert = true;
+    });
 
-        const deviceIndex = state.devices.findIndex(
-          (device) => device.id === deviceId
-        );
+    builder.addCase(updateDevice.fulfilled, (state, action) => {
+      const { deviceId, data } = action.payload;
 
-        if (deviceIndex !== -1) {
-          state.devices[deviceIndex] = {
-            ...state.devices[deviceIndex],
-            ...data,
-          };
-        }
-      }),
-      builder.addCase(deleteDevice.fulfilled, (state, action) => {
-        const { deviceId } = action.payload;
-        state.devices = state.devices.filter(
-          (device) => device.id !== deviceId
-        );
-      });
+      const deviceIndex = state.devices.findIndex(
+        (device) => device.id === deviceId
+      );
+
+      if (deviceIndex !== -1) {
+        state.devices[deviceIndex] = {
+          ...state.devices[deviceIndex],
+          ...data,
+        };
+        state.updatedDeviceSuccessAlert = true;
+      }
+    });
+    builder.addCase(deleteDevice.fulfilled, (state, action) => {
+      const { deviceId } = action.payload;
+      state.devices = state.devices.filter((device) => device.id !== deviceId);
+      state.deletedDeviceSuccessAlert = true;
+    });
   },
 });
 

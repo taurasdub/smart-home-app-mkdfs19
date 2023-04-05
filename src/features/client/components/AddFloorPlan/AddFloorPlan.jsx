@@ -13,12 +13,14 @@ import {
   Input,
   Flex,
   Box,
+  Link,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { useDispatch } from "react-redux";
 import { addFloorPlan } from "../../../../store/reducers/roomSlice";
 import { UserAuth } from "../../../../context/AuthContext";
+import { roomHideAlert } from "../../../../store/reducers/roomSlice";
 
 function AddFloorPlan() {
   const dispatch = useDispatch();
@@ -29,7 +31,11 @@ function AddFloorPlan() {
 
   const onSubmit = async () => {
     const newRooms = rooms.map((room) => ({ name: room.name }));
-    newRooms.forEach((room) => dispatch(addFloorPlan({ user, data: room })));
+    newRooms.forEach((room) =>
+      dispatch(addFloorPlan({ user, data: room })).then(() => {
+        setTimeout(() => dispatch(roomHideAlert()), 4000);
+      })
+    );
     onClose();
   };
 
@@ -51,9 +57,8 @@ function AddFloorPlan() {
 
   return (
     <React.Fragment>
-      <Button onClick={onOpen} mr={"10px"}>
-        Add Floor Plan
-      </Button>
+      <Button onClick={onOpen}>Add Floor Plan</Button>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,6 +74,7 @@ function AddFloorPlan() {
                   <Flex>
                     <Input
                       value={room.name}
+                      required
                       onChange={(e) => handleInputChange(index, e.target.value)}
                       placeholder={`Enter name for room ${index + 1}`}
                       {...register(`rooms.${index}.name`, {
@@ -82,10 +88,7 @@ function AddFloorPlan() {
               ))}
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost" type="submit">
+              <Button colorScheme="blue" type="submit">
                 Add
               </Button>
             </ModalFooter>

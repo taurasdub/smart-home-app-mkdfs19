@@ -47,7 +47,10 @@ export default function SignIn() {
           </Heading>
           <Text fontSize={"lg"} color={"gray.400"}>
             to enjoy all of our{" "}
-            <ChakraLink color={"blue.400"}>features</ChakraLink> ✌️
+            <RouterLink to="/features">
+              <ChakraLink color={"blue.400"}>features</ChakraLink>
+            </RouterLink>{" "}
+            ✌️
           </Text>
         </Stack>
         {error && (
@@ -70,7 +73,7 @@ export default function SignIn() {
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
                 <Input
-                  type="email"
+                  type="text"
                   label="Email Address"
                   name="email"
                   onChange={(e) => setEmail(e.target.value)}

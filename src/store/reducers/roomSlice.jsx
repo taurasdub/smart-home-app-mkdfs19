@@ -45,22 +45,33 @@ export const deleteFloorPlan = createAsyncThunk(
 
 const initialState = {
   rooms: [],
+  deletedFloorPlanSuccessAlert: false,
+  addedFloorPlanSuccessAlert: false,
 };
 
 const roomSlice = createSlice({
   name: "room",
   initialState,
+  reducers: {
+    roomHideAlert(state) {
+      state.deletedFloorPlanSuccessAlert = false;
+      state.addedFloorPlanSuccessAlert = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getRooms.fulfilled, (state, action) => {
       state.rooms = action.payload.rooms;
     }),
       builder.addCase(addFloorPlan.fulfilled, (state, action) => {
         state.rooms.push(action.payload.data);
+        state.addedFloorPlanSuccessAlert = true;
       }),
       builder.addCase(deleteFloorPlan.fulfilled, (state) => {
         state.rooms = [];
+        state.deletedFloorPlanSuccessAlert = true;
       });
   },
 });
 
+export const { roomHideAlert } = roomSlice.actions;
 export default roomSlice.reducer;

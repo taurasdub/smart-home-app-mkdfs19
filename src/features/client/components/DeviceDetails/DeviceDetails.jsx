@@ -26,6 +26,7 @@ import {
   Tbody,
   Td,
   useDisclosure,
+  Box,
 } from "@chakra-ui/react";
 import {
   AlertDialog,
@@ -42,6 +43,9 @@ import {
   deleteDevice,
   updateDevice,
 } from "../../../../store/reducers/deviceSlice";
+import DeviceControl from "../DeviceControl/DeviceControl";
+import { useSelector } from "react-redux";
+import { deviceHideAlert } from "../../../../store/reducers/deviceSlice";
 
 function DeviceDetails({ heading, devices, rooms, currentUser }) {
   const {
@@ -60,6 +64,14 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
   const dispatch = useDispatch();
   const cancelRef = React.useRef();
 
+  const updatedDeviceSuccessAlert = useSelector(
+    (state) => state.device.updatedDeviceSuccessAlert
+  );
+
+  const deletedDeviceSuccessAlert = useSelector(
+    (state) => state.device.deletedDeviceSuccessAlert
+  );
+
   const handleOpen = (device) => {
     setDeviceId(device.id);
     setIsSensor(device.type === "sensor");
@@ -72,28 +84,41 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
   };
 
   const onSubmit = async (data) => {
+    const currentDevice = devices.find((device) => device.id === deviceId);
+    const updatedDevice = {
+      deviceName:
+        data.deviceName !== "" ? data.deviceName : currentDevice.deviceName,
+      room: data.room || currentDevice.room,
+      ...(isSensor && { unit: data.unit, maxValue: data.maxValue }),
+    };
+    if (
+      updatedDevice.deviceName === currentDevice.deviceName &&
+      updatedDevice.room === currentDevice.room &&
+      (!isSensor ||
+        (updatedDevice.unit === currentDevice.unit &&
+          updatedDevice.maxValue === currentDevice.maxValue))
+    ) {
+      onEditClose();
+      return;
+    }
     dispatch(
-      updateDevice({
-        currentUser,
-        deviceId,
-        isSensor,
-        data: {
-          deviceName: data.deviceName,
-          room: data.room || "",
-          ...(isSensor && { unit: data.unit, maxValue: data.maxValue }),
-        },
-      })
-    );
+      updateDevice({ currentUser, deviceId, isSensor, data: updatedDevice })
+    ).then(() => {
+      setTimeout(() => dispatch(deviceHideAlert()), 4000);
+      reset();
+    });
     onEditClose();
   };
 
   const handleConfirmDelete = async () => {
-    dispatch(deleteDevice({ currentUser, deviceId }));
+    dispatch(deleteDevice({ currentUser, deviceId })).then(() => {
+      setTimeout(() => dispatch(deviceHideAlert()), 4000);
+    });
     onDeleteClose();
   };
 
   return (
-    <MainContent>
+    <MainContent height="750px">
       <React.Fragment>
         <Heading color="white">{heading}</Heading>
         <TableContainer color="white">
@@ -101,8 +126,9 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
             <Thead>
               <Tr>
                 <Th color="white">Type</Th>
+                <Th color="white">Room</Th>
                 <Th color="white">Name</Th>
-                <Th color="white">Current Value</Th>
+                <Th color="white">Current Value/State</Th>
                 <Th isNumeric color="white">
                   Actions
                 </Th>
@@ -110,12 +136,18 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
             </Thead>
             <Tbody>
               {devices.map((device) => (
-                <Tr key={device.deviceName}>
+                <Tr key={device.id}>
                   <Td>
                     <Badge>{device.type}</Badge>
                   </Td>
+                  <Td>{device.room}</Td>
                   <Td>{device.deviceName}</Td>
-                  <Td>{device.maxValue}</Td>
+                  <Td>
+                    {device.type === "sensor" && device.maxValue + device.unit}
+                    {device.type === "switch" && (
+                      <DeviceControl mqttDevice={device.mqttTopic} />
+                    )}
+                  </Td>
                   <Td isNumeric>
                     <Flex justifyContent="flex-end" gap="10px">
                       <Button onClick={() => handleOpen(device)}>
@@ -156,13 +188,17 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
                     <HStack>
                       {rooms.map((room) => (
                         <Radio
-                          key={room.name}
+                          key={room.id}
                           value={room.name}
                           {...register("room")}
                         >
-                          {room.name}
+                          {room.name.charAt(0).toUpperCase() +
+                            room.name.slice(1)}
                         </Radio>
                       ))}
+                      <Radio value={"none"} {...register("room")}>
+                        None
+                      </Radio>
                     </HStack>
                   </RadioGroup>
                 )}
@@ -221,6 +257,36 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
             </AlertDialogContent>
           </AlertDialogOverlay>
         </AlertDialog>
+        {updatedDeviceSuccessAlert && (
+          <Box
+            position="fixed"
+            top="0"
+            left="0"
+            w="100%"
+            bg="green.400"
+            textAlign="center"
+            p={3}
+            className="drop-down"
+          >
+            Device was updated{" "}
+            <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
+          </Box>
+        )}
+        {deletedDeviceSuccessAlert && (
+          <Box
+            position="fixed"
+            top="0"
+            left="0"
+            w="100%"
+            bg="green.400"
+            textAlign="center"
+            p={3}
+            className="drop-down"
+          >
+            Device was deleted{" "}
+            <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
+          </Box>
+        )}
       </React.Fragment>
     </MainContent>
   );

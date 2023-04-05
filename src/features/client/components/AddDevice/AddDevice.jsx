@@ -23,17 +23,19 @@ import { typeMock } from "../../mocks/typeMock";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useSelector } from "react-redux";
 import { getRooms } from "../../../../store/reducers/roomSlice";
-import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
 import { deviceHideAlert } from "../../../../store/reducers/deviceSlice";
 import { Box } from "@chakra-ui/react";
+import "./AddDevice.css";
 
 function AddDevice() {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deviceType, setDeviceType] = useState("switch");
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
   const { user } = UserAuth();
-  const showAlert = useSelector((state) => state.device.showAlert); // new
+  const addedDeviceSuccessAlert = useSelector(
+    (state) => state.device.addedDeviceSuccessAlert
+  );
 
   useEffect(() => {
     dispatch(getRooms(user));
@@ -57,7 +59,10 @@ function AddDevice() {
           }),
         },
       })
-    ).then(() => setTimeout(() => dispatch(deviceHideAlert()), 4000));
+    ).then(() => {
+      setTimeout(() => dispatch(deviceHideAlert()), 4000);
+      reset();
+    });
     onClose();
   };
 
@@ -65,12 +70,17 @@ function AddDevice() {
     setDeviceType(type.name);
   };
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   return (
     <React.Fragment>
       <Button onClick={onOpen} mr={"10px"}>
         Add Device
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={handleClose}>
         <ModalOverlay />
         <form onSubmit={handleSubmit((data) => onSubmit(data))}>
           <ModalContent maxW="90%">
@@ -93,15 +103,10 @@ function AddDevice() {
                   </HStack>
                 </RadioGroup>
               ) : (
-                <div>
-                  You don't have a floor plan set up yet. If you want device to
-                  be assigned to the room instantly, you should click "Add Floor
-                  Plan" button below.
-                  <AddFloorPlan />
-                </div>
+                <Box>Currently there are no rooms in the floor plan.</Box>
               )}
               <FormLabel>Choose device type</FormLabel>
-              <RadioGroup>
+              <RadioGroup defaultValue="switch">
                 <HStack>
                   {typeMock.types.map((type) => (
                     <Radio
@@ -115,15 +120,21 @@ function AddDevice() {
                   ))}
                 </HStack>
               </RadioGroup>
-              <FormLabel>Widget Name</FormLabel>
+              <FormLabel>
+                Widget Name<span style={{ color: "red" }}>*</span>
+              </FormLabel>
               <Input
                 type="text"
                 placeholder="Enter widget name"
+                required
                 {...register("deviceName")}
               />
-              <FormLabel>MQTT Topic Name</FormLabel>
+              <FormLabel>
+                MQTT Topic Name<span style={{ color: "red" }}>*</span>
+              </FormLabel>
               <Input
                 type="text"
+                required
                 placeholder="Enter target MQTT topic"
                 {...register("mqttTopic")}
               />
@@ -144,30 +155,27 @@ function AddDevice() {
                 </React.Fragment>
               )}
             </ModalBody>
-
             <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant="ghost" type="submit">
+              <Button colorScheme="blue" type="submit">
                 Add
               </Button>
             </ModalFooter>
           </ModalContent>
         </form>
       </Modal>
-      {showAlert && (
+      {addedDeviceSuccessAlert && (
         <Box
-          position="absolute"
-          top="5%"
-          right="5%"
-          p="3"
+          position="fixed"
+          top="0"
+          left="0"
+          w="100%"
           bg="green.400"
-          color="white"
-          borderRadius="md"
-          boxShadow="md"
+          textAlign="center"
+          p={3}
+          className="drop-down"
         >
-          Device was successfully added
+          Device was added{" "}
+          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
         </Box>
       )}
     </React.Fragment>

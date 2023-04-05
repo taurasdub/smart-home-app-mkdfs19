@@ -14,7 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { deleteFloorPlan } from "../../../../store/reducers/roomSlice";
+import {
+  deleteFloorPlan,
+  roomHideAlert,
+} from "../../../../store/reducers/roomSlice";
+import { useSelector } from "react-redux";
+import { Box } from "@chakra-ui/react";
 function UserSettings() {
   const { user } = UserAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,17 +27,24 @@ function UserSettings() {
   const dispatch = useDispatch();
 
   const handleConfirmDelete = async () => {
-    dispatch(deleteFloorPlan(user));
+    dispatch(deleteFloorPlan(user)).then(() => {
+      setTimeout(() => dispatch(roomHideAlert()), 4000);
+    });
 
     onClose();
   };
 
   return (
-    <MainContent>
+    <MainContent height="750px">
       <Heading color="white">Account Information</Heading>
-      <Text color="white">Email: {user.email}</Text>
+
+      <Text color="white" mt={2} mb={2}>
+        Email: {user.email}
+      </Text>
       <Divider orientation="horizontal" color="white" mb={3} mt={3} />
-      <Button onClick={onOpen}>Delete Current Floor Plan</Button>
+      <Button onClick={onOpen} mt={2}>
+        Delete Current Floor Plan
+      </Button>
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}

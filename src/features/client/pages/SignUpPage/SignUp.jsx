@@ -5,7 +5,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link as ChakraLink,
   Button,
@@ -48,7 +47,7 @@ function SignUp() {
         setError("Email is invalid!");
       } else if (error.code === "auth/email-already-in-use") {
         setError("Email already in use!");
-      } else if (error.code === "auth/weak-password") {
+      } else if (error.code === "auth/weak-password" || password === "") {
         setError("Password is too weak! (at least 6 symbols)");
       }
     }

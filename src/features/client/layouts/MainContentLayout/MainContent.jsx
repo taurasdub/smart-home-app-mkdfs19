@@ -1,17 +1,20 @@
 import React from "react";
-import { Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 
-function MainContent({ children }) {
+function MainContent({ children, height, ...props }) {
   return (
-    <Container
+    <Box
       bg="#2A3F74"
       borderRadius="10px"
-      height="75%"
-      maxWidth="1240px"
+      className="container"
+      height="auto"
+      minH={height}
+      maxW="1240px"
       padding="50px"
+      {...props}
     >
       {children}
-    </Container>
+    </Box>
   );
 }
 
