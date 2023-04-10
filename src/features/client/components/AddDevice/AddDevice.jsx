@@ -50,7 +50,7 @@ function AddDevice() {
         deviceType,
         data: {
           mqttTopic: data.mqttTopic,
-          room: data.room || "",
+          room: data.room || "none",
           deviceName: data.deviceName,
           type: deviceType || "",
           ...(deviceType === "sensor" && {

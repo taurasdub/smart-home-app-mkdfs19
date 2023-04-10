@@ -6,12 +6,14 @@ import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { GridItem } from "@chakra-ui/react";
 import AddDevice from "../../components/AddDevice/AddDevice";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { useMediaQuery } from "@chakra-ui/react";
 
 function Header() {
   let currentHour = new Date().getHours();
   const { logout } = UserAuth();
   const navigate = useNavigate();
+
+  const [isLargerThan975] = useMediaQuery("(min-width: 975px)");
 
   const handleLogOut = async () => {
     try {

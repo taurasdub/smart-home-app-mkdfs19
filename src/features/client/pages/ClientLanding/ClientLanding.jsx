@@ -17,6 +17,7 @@ import UserSettings from "../../components/UserSettings/UserSettings";
 import Features from "../../components/Features/Features";
 import { useSelector } from "react-redux";
 import { Box } from "@chakra-ui/react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 function ClientLanding() {
   const { user } = UserAuth();
@@ -27,9 +28,11 @@ function ClientLanding() {
     (state) => state.room.addedFloorPlanSuccessAlert
   );
 
+  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
+
   return (
     <Container maxW="1240px">
-      {user && (
+      {user && isLargerThan500 && (
         <Flex justifyContent="space-between" mt={5} mb={5} gap={5}>
           <Header />
           <Weather />

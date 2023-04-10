@@ -1,5 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { addDoc, deleteDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  deleteDoc,
+  collection,
+  getDocs,
+  writeBatch,
+  query,
+  where,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../config/firebase";
 
 export const getRooms = createAsyncThunk("room/getRoom", async (user) => {
@@ -34,9 +43,28 @@ export const deleteFloorPlan = createAsyncThunk(
     try {
       const roomsCollectionRef = collection(db, "users", user.uid, "rooms");
       const snapshot = await getDocs(roomsCollectionRef);
-      snapshot.forEach((doc) => {
-        deleteDoc(doc.ref);
-      });
+
+      for (const doc of snapshot.docs) {
+        const roomName = doc.data().name;
+        const devicesCollectionRef = collection(
+          db,
+          "users",
+          user.uid,
+          "devices"
+        );
+        const q = query(devicesCollectionRef, where("room", "==", roomName));
+        const devicesQuerySnapshot = await getDocs(q);
+
+        for (const deviceDoc of devicesQuerySnapshot.docs) {
+          await updateDoc(deviceDoc.ref, { room: "none" });
+        }
+        await deleteDoc(doc.ref);
+      }
+
+      return;
+      // snapshot.forEach((doc) => {
+      //   deleteDoc(doc.ref);
+      // });
     } catch (error) {
       throw error;
     }

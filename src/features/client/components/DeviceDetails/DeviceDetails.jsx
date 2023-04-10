@@ -27,6 +27,7 @@ import {
   Td,
   useDisclosure,
   Box,
+  Text,
 } from "@chakra-ui/react";
 import {
   AlertDialog,
@@ -89,7 +90,10 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
       deviceName:
         data.deviceName !== "" ? data.deviceName : currentDevice.deviceName,
       room: data.room || currentDevice.room,
-      ...(isSensor && { unit: data.unit, maxValue: data.maxValue }),
+      ...(isSensor && {
+        unit: data.unit || currentDevice.unit,
+        maxValue: data.maxValue || currentDevice.maxValue,
+      }),
     };
     if (
       updatedDevice.deviceName === currentDevice.deviceName &&
@@ -183,7 +187,7 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
                   {...register("deviceName")}
                 />
                 <FormLabel>Device location</FormLabel>
-                {rooms.length > 0 && (
+                {rooms.length > 0 ? (
                   <RadioGroup>
                     <HStack>
                       {rooms.map((room) => (
@@ -201,6 +205,8 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
                       </Radio>
                     </HStack>
                   </RadioGroup>
+                ) : (
+                  <Text>Currently there are no rooms in the floor plan.</Text>
                 )}
                 {isSensor && (
                   <React.Fragment>

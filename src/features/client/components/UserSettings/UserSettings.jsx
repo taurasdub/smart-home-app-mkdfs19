@@ -18,8 +18,7 @@ import {
   deleteFloorPlan,
   roomHideAlert,
 } from "../../../../store/reducers/roomSlice";
-import { useSelector } from "react-redux";
-import { Box } from "@chakra-ui/react";
+
 function UserSettings() {
   const { user } = UserAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();

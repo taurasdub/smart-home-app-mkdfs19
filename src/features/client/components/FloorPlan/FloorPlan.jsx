@@ -8,6 +8,7 @@ import { getDevices } from "../../../../store/reducers/deviceSlice";
 import { getRooms } from "../../../../store/reducers/roomSlice";
 import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
 import { UserAuth } from "../../../../context/AuthContext";
+import { useMediaQuery } from "@chakra-ui/react";
 
 function FloorPlan() {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ function FloorPlan() {
 
   const rooms = useSelector((state) => state.room.rooms);
   const devices = useSelector((state) => state.device.devices);
+
+  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
 
   const navigate = useNavigate();
 
@@ -36,11 +39,13 @@ function FloorPlan() {
 
   return (
     <MainContent
-      height="750px"
+      height={isLargerThan500 ? "79vh" : "95vh"}
       display="flex"
       justifyContent={rooms.length > 0 ? "flex-start" : "center"}
       alignItems={rooms.length > 0 ? "normal" : "center"}
       gap="15px"
+      mb={5}
+      mt={5}
     >
       {rooms.length > 0 ? (
         rooms.map((room) => (
@@ -72,15 +77,14 @@ function FloorPlan() {
                     onClick={handleDeviceClick}
                     padding="5px"
                     marginLeft="5px"
+                    textAlign="center"
                   >
                     <Text textAlign="center">
                       {device.deviceName.toUpperCase().slice(0, 4)}
                     </Text>
-                    <Text textAlign="center">
-                      {device.type === "switch" && (
-                        <DeviceControl mqttDevice={device.mqttTopic} />
-                      )}
-                    </Text>
+                    {device.type === "switch" && (
+                      <DeviceControl mqttDevice={device.mqttTopic} />
+                    )}
                     <Text textAlign="center">
                       {device.type === "sensor" &&
                         device.maxValue + device.unit}

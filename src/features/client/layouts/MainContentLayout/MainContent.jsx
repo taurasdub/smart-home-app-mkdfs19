@@ -7,7 +7,6 @@ function MainContent({ children, height, ...props }) {
       bg="#2A3F74"
       borderRadius="10px"
       className="container"
-      height="auto"
       minH={height}
       maxW="1240px"
       padding="50px"

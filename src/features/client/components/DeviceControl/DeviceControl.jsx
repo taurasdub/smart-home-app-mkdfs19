@@ -10,35 +10,36 @@ function DeviceControl({ mqttDevice }) {
 
   const MQTT_TOPIC = mqttDevice;
 
-  // useEffect(() => {
-  //   const mqttClient = mqtt.connect(MQTT_SERVER);
-  //   setClient(mqttClient);
-  //   mqttClient.on("connect", () => {
-  //     mqttClient.subscribe(MQTT_TOPIC);
-  //   });
-  //   mqttClient.on("message", (topic, message) => {
-  //     if (topic === MQTT_TOPIC) {
-  //       setDeviceState(message.toString());
-  //     }
-  //   });
-  //   mqttClient.on("error", (error) => {
-  //     console.log(`MQTT error: ${error}`);
-  //   });
+  useEffect(() => {
+    const mqttClient = mqtt.connect(MQTT_SERVER);
+    setClient(mqttClient);
+    mqttClient.on("connect", () => {
+      setDeviceState("off");
+      console.log("connected");
+      console.log(deviceState);
+      mqttClient.subscribe(MQTT_TOPIC);
+    });
+    mqttClient.on("message", (topic, message) => {
+      if (topic === MQTT_TOPIC) {
+        setDeviceState(message.toString());
+      }
+    });
+    mqttClient.on("error", (error) => {
+      console.log(`MQTT error: ${error}`);
+    });
 
-  //   return () => {
-  //     if (client) {
-  //       client.end();
-  //     }
-  //   };
-  // }, [MQTT_TOPIC]);
+    return () => {
+      if (client) {
+        client.end();
+      }
+    };
+  }, [MQTT_TOPIC]);
 
-  // const handleButtonClick = () => {
-  //   const newDeviceState = deviceState === "off" ? "on" : "off";
-  //   client.publish(MQTT_TOPIC, newDeviceState);
-  //   setDeviceState(newDeviceState);
-  // };
-
-  // console.log(deviceState);
+  const handleButtonClick = () => {
+    const newDeviceState = deviceState === "off" ? "on" : "off";
+    client.publish(MQTT_TOPIC, newDeviceState);
+    setDeviceState(newDeviceState);
+  };
 
   return (
     <>
