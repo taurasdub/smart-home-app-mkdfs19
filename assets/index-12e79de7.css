@@ -1,0 +1,1 @@
+.buttons *{margin-right:5px}@media screen and (max-width: 975px){.buttons *{margin-bottom:10px}}.drop-down{animation:drop .2s ease-in-out forwards}@keyframes drop{0%{top:-100%;opacity:0}to{top:0;opacity:1}}.weather-container{color:#fff}*{margin:0;padding:0;box-sizing:border-box}body,html{background-color:#192033!important}
