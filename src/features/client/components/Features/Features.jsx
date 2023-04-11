@@ -14,7 +14,7 @@ function Features() {
   return (
     <Box mt={5}>
       <MainContent display="flex">
-        <Box width="50%" paddingRight={5}>
+        <Box width={{ base: "100%", md: "50%" }} paddingRight={{ md: 5 }}>
           <Heading color="white" mb={2}>
             Smart Home System Features
           </Heading>
@@ -32,10 +32,10 @@ function Features() {
             </ListItem>
           </UnorderedList>
           <Link to="/signin">
-            <Button mt={10}>Back to the login page</Button>
+            <Button mt={{ base: 5, md: 10 }}>Back to the login page</Button>
           </Link>
         </Box>
-        <Box width="50%">
+        <Box width={{ base: "100%", md: "50%" }}>
           <Heading color="white" mb={2}>
             What's MQTT?
           </Heading>
@@ -54,7 +54,7 @@ function Features() {
           </Text>{" "}
         </Box>
       </MainContent>
-      <Box mt={5}>
+      <Box mt={5} mb={5}>
         <MainContent>
           <Heading color="white" mb={2}>
             Authentication

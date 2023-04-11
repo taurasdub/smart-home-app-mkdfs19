@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { Link as RouterLink } from "react-router-dom";
 import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -38,11 +39,13 @@ export default function SignIn() {
     }
   };
 
+  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
+
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+    <Flex minH={"100vh"} align="center" justifyContent="center">
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} color="white">
+          <Heading fontSize={"4xl"} color="white" textAlign="center">
             Sign in to your account
           </Heading>
           <Text fontSize={"lg"} color={"gray.400"}>
@@ -66,7 +69,7 @@ export default function SignIn() {
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
           p={8}
-          w="430px"
+          w={isLargerThan500 ? "430px" : "90vw"}
         >
           <form onSubmit={handleSignIn}>
             <Stack spacing={4}>

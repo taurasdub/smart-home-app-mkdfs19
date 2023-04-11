@@ -41,7 +41,7 @@ function UserSettings() {
         Email: {user.email}
       </Text>
       <Divider orientation="horizontal" color="white" mb={3} mt={3} />
-      <Button onClick={onOpen} mt={2}>
+      <Button onClick={onOpen} mt={2} width="190px">
         Delete Current Floor Plan
       </Button>
       <AlertDialog

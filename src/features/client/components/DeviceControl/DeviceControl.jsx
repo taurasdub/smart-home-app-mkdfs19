@@ -49,6 +49,7 @@ function DeviceControl({ mqttDevice }) {
         <Button
           onClick={handleButtonClick}
           colorScheme={deviceState === "off" ? "red" : "green"}
+          w="100%"
         >
           {deviceState}
         </Button>

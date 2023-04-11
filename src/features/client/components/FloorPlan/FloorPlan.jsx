@@ -39,7 +39,7 @@ function FloorPlan() {
 
   return (
     <MainContent
-      height={isLargerThan500 ? "79vh" : "95vh"}
+      height={"79vh"}
       display="flex"
       justifyContent={rooms.length > 0 ? "flex-start" : "center"}
       alignItems={rooms.length > 0 ? "normal" : "center"}
@@ -61,6 +61,7 @@ function FloorPlan() {
             onMouseEnter={() => setHoveredBox(room.name)}
             onMouseLeave={() => setHoveredBox(null)}
             cursor="pointer"
+            overflow="hidden"
           >
             <Heading textAlign="center" p="5px">
               {room.name}
@@ -72,7 +73,7 @@ function FloorPlan() {
                   <Box
                     key={device.deviceName}
                     bg="white"
-                    width="20%"
+                    width="55px"
                     borderRadius="10px"
                     onClick={handleDeviceClick}
                     padding="5px"

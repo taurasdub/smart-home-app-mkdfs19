@@ -19,12 +19,15 @@ import { UserAuth } from "../../../../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../../config/firebase";
 import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
+import { useMediaQuery } from "@chakra-ui/react";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
 
   const { createUser } = UserAuth();
 
@@ -74,7 +77,7 @@ function SignUp() {
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
           p={8}
-          w="430px"
+          w={isLargerThan500 ? "430px" : "90vw"}
         >
           <form onSubmit={handleSignUp}>
             <Stack spacing={4}>

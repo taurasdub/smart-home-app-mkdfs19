@@ -72,12 +72,13 @@ function AddDevice() {
 
   const handleClose = () => {
     reset();
+    setDeviceType("switch");
     onClose();
   };
 
   return (
     <React.Fragment>
-      <Button onClick={onOpen} mr={"10px"}>
+      <Button onClick={onOpen} w="100px">
         Add Device
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>

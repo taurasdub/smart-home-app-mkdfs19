@@ -9,7 +9,7 @@ function MainContent({ children, height, ...props }) {
       className="container"
       minH={height}
       maxW="1240px"
-      padding="50px"
+      padding="25px"
       {...props}
     >
       {children}
