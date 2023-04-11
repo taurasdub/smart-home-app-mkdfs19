@@ -42,8 +42,13 @@ export default function SignIn() {
   const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
 
   return (
-    <Flex minH={"100vh"} align="center" justifyContent="center">
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12}>
+    <Flex
+      minH={"100vh"}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Stack spacing={8} mx={"auto"} py={12} w={{ base: "100%", md: "50%" }}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} color="white" textAlign="center">
             Sign in to your account
@@ -55,6 +60,11 @@ export default function SignIn() {
             </RouterLink>{" "}
             ✌️
           </Text>
+          <RouterLink color={"blue.400"} to="/register" variant="body2">
+            <ChakraLink color={"blue.400"}>
+              Don't have an account? Sign Up
+            </ChakraLink>
+          </RouterLink>
         </Stack>
         {error && (
           <Text color="red.500">
@@ -69,7 +79,6 @@ export default function SignIn() {
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
           p={8}
-          w={isLargerThan500 ? "430px" : "90vw"}
         >
           <form onSubmit={handleSignIn}>
             <Stack spacing={4}>
@@ -101,11 +110,7 @@ export default function SignIn() {
                   <Checkbox>Remember me</Checkbox>
                   <ChakraLink color={"blue.400"}>Forgot password?</ChakraLink>
                 </Stack>
-                <RouterLink color={"blue.400"} to="/register" variant="body2">
-                  <ChakraLink color={"blue.400"}>
-                    Don't have an account? Sign Up
-                  </ChakraLink>
-                </RouterLink>
+
                 <Button
                   bg={"blue.400"}
                   color={"white"}

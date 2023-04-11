@@ -32,7 +32,9 @@ function Features() {
             </ListItem>
           </UnorderedList>
           <Link to="/signin">
-            <Button mt={{ base: 5, md: 10 }}>Back to the login page</Button>
+            <Button mt={{ base: 5, md: 10 }} mr={2}>
+              Back to the login page
+            </Button>
           </Link>
         </Box>
         <Box width={{ base: "100%", md: "50%" }}>

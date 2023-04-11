@@ -107,7 +107,8 @@ function Header() {
               <Link to="/sensors">
                 <Button w="100px">Sensors</Button>
               </Link>
-              <AddDevice />{" "}
+              <AddDevice />
+
               <Link to="/settings">
                 <Button w="100px"> Settings</Button>
               </Link>

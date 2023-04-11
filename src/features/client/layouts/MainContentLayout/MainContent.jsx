@@ -10,6 +10,7 @@ function MainContent({ children, height, ...props }) {
       minH={height}
       maxW="1240px"
       padding="25px"
+      mb={5}
       {...props}
     >
       {children}

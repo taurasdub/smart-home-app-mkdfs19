@@ -57,8 +57,13 @@ function SignUp() {
   };
 
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"}>
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12}>
+    <Flex
+      minH={"100vh"}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Stack spacing={8} mx={"auto"} py={12} w={{ base: "100%", md: "50%" }}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} color="white">
             Sign Up
@@ -77,7 +82,6 @@ function SignUp() {
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"0px 1px 27px 1px rgba(42,63,116,0.74)"}
           p={8}
-          w={isLargerThan500 ? "430px" : "90vw"}
         >
           <form onSubmit={handleSignUp}>
             <Stack spacing={4}>

@@ -89,7 +89,7 @@ function AddFloorPlan() {
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="blue" type="submit">
-                Add
+                Save
               </Button>
             </ModalFooter>
           </ModalContent>

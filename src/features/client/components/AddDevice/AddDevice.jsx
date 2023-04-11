@@ -78,7 +78,7 @@ function AddDevice() {
 
   return (
     <React.Fragment>
-      <Button onClick={onOpen} w="100px">
+      <Button onClick={onOpen} w="100px" marginRight="10px">
         Add Device
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>

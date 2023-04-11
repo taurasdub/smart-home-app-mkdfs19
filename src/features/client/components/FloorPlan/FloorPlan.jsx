@@ -14,15 +14,13 @@ function FloorPlan() {
   const dispatch = useDispatch();
   const { user } = UserAuth();
 
-  useEffect(() => {
-    dispatch(getRooms(user));
-    dispatch(getDevices(user));
-  }, [user]);
-
   const rooms = useSelector((state) => state.room.rooms);
   const devices = useSelector((state) => state.device.devices);
 
-  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
+  useEffect(() => {
+    dispatch(getRooms(user));
+    dispatch(getDevices(user));
+  }, [user, rooms]);
 
   const navigate = useNavigate();
 
@@ -39,7 +37,7 @@ function FloorPlan() {
 
   return (
     <MainContent
-      height={"79vh"}
+      height={{ base: "21vh", sm: "58vh", md: "77vh" }}
       display="flex"
       justifyContent={rooms.length > 0 ? "flex-start" : "center"}
       alignItems={rooms.length > 0 ? "normal" : "center"}
