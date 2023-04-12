@@ -31,6 +31,7 @@ function AddFloorPlan() {
 
   const onSubmit = async () => {
     const newRooms = rooms.map((room) => ({ name: room.name }));
+
     newRooms.forEach((room) =>
       dispatch(addFloorPlan({ user, data: room })).then(() => {
         setTimeout(() => dispatch(roomHideAlert()), 4000);

@@ -8,7 +8,6 @@ import { getDevices } from "../../../../store/reducers/deviceSlice";
 import { getRooms } from "../../../../store/reducers/roomSlice";
 import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
 import { UserAuth } from "../../../../context/AuthContext";
-import { useMediaQuery } from "@chakra-ui/react";
 
 function FloorPlan() {
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ function FloorPlan() {
 
   return (
     <MainContent
-      height={{ base: "21vh", sm: "58vh", md: "77vh" }}
+      height={{ base: "21vh", sm: "58vh", md: "79vh" }}
       display="flex"
       justifyContent={rooms.length > 0 ? "flex-start" : "center"}
       alignItems={rooms.length > 0 ? "normal" : "center"}
@@ -51,7 +50,7 @@ function FloorPlan() {
             bg="#edf2f7"
             height="300px"
             width="300px"
-            key={room.name}
+            key={room.id}
             onClick={(e) => handleRoomClick(e, room.id)}
             borderRadius="10px"
             transform={hoveredBox === room.name ? "scale(1.05)" : ""}
@@ -69,7 +68,7 @@ function FloorPlan() {
                 .filter((device) => device.room === room.name)
                 .map((device) => (
                   <Box
-                    key={device.deviceName}
+                    key={device.id}
                     bg="white"
                     width="55px"
                     borderRadius="10px"
