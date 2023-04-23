@@ -39,8 +39,6 @@ export default function SignIn() {
     }
   };
 
-  const [isLargerThan500] = useMediaQuery("(min-width: 500px)");
-
   return (
     <Flex
       minH={"100vh"}

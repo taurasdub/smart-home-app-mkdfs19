@@ -61,14 +61,6 @@ function ClientLanding() {
           }
         />
         <Route
-          path="/lights"
-          element={
-            <ProtectedRoute>
-              <Lights />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/switches"
           element={
             <ProtectedRoute>

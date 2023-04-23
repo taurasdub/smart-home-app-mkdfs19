@@ -22,7 +22,7 @@ import { addFloorPlan } from "../../../../store/reducers/roomSlice";
 import { UserAuth } from "../../../../context/AuthContext";
 import { roomHideAlert } from "../../../../store/reducers/roomSlice";
 
-function AddFloorPlan() {
+function AddFloorPlan({ onFloorPlanAdded }) {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit } = useForm();
@@ -35,6 +35,7 @@ function AddFloorPlan() {
     newRooms.forEach((room) =>
       dispatch(addFloorPlan({ user, data: room })).then(() => {
         setTimeout(() => dispatch(roomHideAlert()), 4000);
+        onFloorPlanAdded();
       })
     );
     onClose();

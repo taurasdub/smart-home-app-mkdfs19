@@ -103,7 +103,7 @@ const deviceSlice = createSlice({
       state.devices = action.payload.devices;
     });
     builder.addCase(addDevice.fulfilled, (state, action) => {
-      state.devices.push(action.payload.data);
+      state.devices = [...state.devices, action.payload.data];
       state.addedDeviceSuccessAlert = true;
     });
 
