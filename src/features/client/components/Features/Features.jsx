@@ -1,11 +1,11 @@
 import React from "react";
 import MainContent from "../../layouts/MainContentLayout/MainContent";
-import { Heading, Box, Button, Text } from "@chakra-ui/react";
 import {
-  List,
+  Heading,
+  Box,
+  Button,
+  Text,
   ListItem,
-  ListIcon,
-  OrderedList,
   UnorderedList,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";

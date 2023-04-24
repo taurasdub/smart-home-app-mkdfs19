@@ -1,26 +1,39 @@
-import { Box, Button, Grid, Heading } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
-import "./index.scss";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { GridItem } from "@chakra-ui/react";
+import {
+  GridItem,
+  useMediaQuery,
+  Box,
+  Button,
+  Grid,
+  Heading,
+} from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { getRooms } from "../../../../store/reducers/roomSlice";
+import { getDevices } from "../../../../store/reducers/deviceSlice";
 import AddDevice from "../../components/AddDevice/AddDevice";
-import { useMediaQuery } from "@chakra-ui/react";
+import "./index.scss";
 
-function Header() {
+function Header({ user }) {
   let currentHour = new Date().getHours();
   const { logout } = UserAuth();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isLargerThan975] = useMediaQuery("(min-width: 975px)");
-  const [isLargerThan400] = useMediaQuery("(min-width: 400px)");
 
   const handleLogOut = async () => {
     try {
       await logout();
       navigate("/signin");
     } catch (error) {}
+  };
+
+  const handleAddedDevice = () => {
+    dispatch(getRooms(user));
+    dispatch(getDevices(user));
   };
 
   return (
@@ -72,7 +85,7 @@ function Header() {
               <Link to="/sensors">
                 <Button w="100px">Sensors</Button>
               </Link>
-              <AddDevice />
+              <AddDevice onDeviceAdded={handleAddedDevice} />
             </Box>
           </GridItem>
         </Grid>
@@ -107,8 +120,7 @@ function Header() {
               <Link to="/sensors">
                 <Button w="100px">Sensors</Button>
               </Link>
-              <AddDevice />
-
+              <AddDevice onDeviceAdded={handleAddedDevice} />
               <Link to="/settings">
                 <Button w="100px"> Settings</Button>
               </Link>

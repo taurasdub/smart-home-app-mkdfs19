@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 function MainContent({ children, height, ...props }) {
   return (

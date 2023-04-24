@@ -29,14 +29,12 @@ function UserSettings() {
     dispatch(deleteFloorPlan(user)).then(() => {
       setTimeout(() => dispatch(roomHideAlert()), 4000);
     });
-
     onClose();
   };
 
   return (
     <MainContent height="750px">
       <Heading color="white">Account Information</Heading>
-
       <Text color="white" mt={2} mb={2}>
         Email: {user.email}
       </Text>
@@ -55,11 +53,9 @@ function UserSettings() {
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Delete current floor plan
             </AlertDialogHeader>
-
             <AlertDialogBody>
               Are you sure? You can't undo this action afterwards.
             </AlertDialogBody>
-
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel

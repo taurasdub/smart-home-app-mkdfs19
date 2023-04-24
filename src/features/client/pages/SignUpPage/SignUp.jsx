@@ -1,5 +1,8 @@
 import * as React from "react";
 import {
+  Alert,
+  AlertIcon,
+  AlertDescription,
   Flex,
   Box,
   FormControl,
@@ -18,7 +21,6 @@ import { Link as RouterLink } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../../../../config/firebase";
-import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
 
 function SignUp() {
   const [email, setEmail] = useState("");

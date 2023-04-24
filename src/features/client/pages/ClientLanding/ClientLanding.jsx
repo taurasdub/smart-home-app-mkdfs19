@@ -1,23 +1,21 @@
 import React from "react";
-import Header from "../../layouts/HeaderLayout/Header";
-import Weather from "../../layouts/WeatherLayout/Weather";
 import { Navigate, Route, Routes } from "react-router-dom";
-import FloorPlan from "../../components/FloorPlan/FloorPlan";
-import AllDevices from "../../components/AllDevices/AllDevices";
-import Lights from "../../components/Lights/Lights";
-import { Container, Flex } from "@chakra-ui/react";
-import RoomDetails from "../../components/RoomDetails/RoomDetails";
-import SignUp from "../SignUpPage/SignUp";
+import { Container, Flex, Box, useMediaQuery } from "@chakra-ui/react";
 import { UserAuth } from "../../../../context/AuthContext";
-import SignIn from "../SignInPage/SignIn";
-import ProtectedRoute from "../../../../config/ProtectedRoute";
-import Switches from "../../components/Switches/Switches";
-import Sensors from "../../components/Sensors/Sensors";
-import UserSettings from "../../components/UserSettings/UserSettings";
-import Features from "../../components/Features/Features";
 import { useSelector } from "react-redux";
-import { Box } from "@chakra-ui/react";
-import { useMediaQuery } from "@chakra-ui/react";
+import AllDevices from "../../components/AllDevices/AllDevices";
+import FloorPlan from "../../components/FloorPlan/FloorPlan";
+import Features from "../../components/Features/Features";
+import Header from "../../layouts/HeaderLayout/Header";
+import ProtectedRoute from "../../../../config/ProtectedRoute";
+import RoomDetails from "../../components/RoomDetails/RoomDetails";
+import SignIn from "../SignInPage/SignIn";
+import SignUp from "../SignUpPage/SignUp";
+import Sensors from "../../components/Sensors/Sensors";
+import SuccessAlertBox from "../../components/SuccessAlertBox/SuccessAlertBox";
+import Switches from "../../components/Switches/Switches";
+import UserSettings from "../../components/UserSettings/UserSettings";
+import Weather from "../../layouts/WeatherLayout/Weather";
 
 function ClientLanding() {
   const { user } = UserAuth();
@@ -39,7 +37,7 @@ function ClientLanding() {
           mb={5}
           gap={5}
         >
-          <Header />
+          <Header user={user} />
           <Weather />
         </Flex>
       )}
@@ -103,34 +101,10 @@ function ClientLanding() {
         <Route path="/features" element={<Features />} />
       </Routes>
       {deletedFloorPlanSuccessAlert && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          w="100%"
-          bg="green.400"
-          textAlign="center"
-          p={3}
-          className="drop-down"
-        >
-          Floor plan was deleted{" "}
-          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
-        </Box>
+        <SuccessAlertBox alertText={"Floor plan was deleted"} />
       )}
       {addedFloorPlanSuccessAlert && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          w="100%"
-          bg="green.400"
-          textAlign="center"
-          p={3}
-          className="drop-down"
-        >
-          Floor plan was added{" "}
-          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
-        </Box>
+        <SuccessAlertBox alertText={"Floor plan was added"} />
       )}
     </Container>
   );

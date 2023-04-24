@@ -1,4 +1,7 @@
 import {
+  Alert,
+  AlertIcon,
+  AlertDescription,
   Flex,
   Box,
   FormControl,
@@ -16,8 +19,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { Link as RouterLink } from "react-router-dom";
-import { Alert, AlertIcon, AlertDescription } from "@chakra-ui/react";
-import { useMediaQuery } from "@chakra-ui/react";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");

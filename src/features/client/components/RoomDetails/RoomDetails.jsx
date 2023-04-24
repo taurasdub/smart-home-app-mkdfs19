@@ -4,9 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getRooms } from "../../../../store/reducers/roomSlice";
 import { getDevices } from "../../../../store/reducers/deviceSlice";
-
 import { UserAuth } from "../../../../context/AuthContext";
-
 import DeviceDetails from "../DeviceDetails/DeviceDetails";
 
 function RoomDetails() {

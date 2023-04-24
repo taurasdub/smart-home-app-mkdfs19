@@ -5,19 +5,7 @@ import {
   Badge,
   Button,
   Flex,
-  FormLabel,
   Heading,
-  HStack,
-  Input,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  RadioGroup,
-  Radio,
   TableContainer,
   Table,
   Thead,
@@ -26,28 +14,17 @@ import {
   Tbody,
   Td,
   useDisclosure,
-  Box,
   Text,
 } from "@chakra-ui/react";
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  deleteDevice,
-  updateDevice,
-} from "../../../../store/reducers/deviceSlice";
 import DeviceControl from "../DeviceControl/DeviceControl";
 import { useSelector } from "react-redux";
-import { deviceHideAlert } from "../../../../store/reducers/deviceSlice";
+import { getDevices } from "../../../../store/reducers/deviceSlice";
 import AddDevice from "../AddDevice/AddDevice";
+import DeleteDeviceAlert from "../DeleteDeviceAlert/DeleteDeviceAlert";
+import SuccessAlertBox from "../SuccessAlertBox/SuccessAlertBox";
+import EditDeviceModal from "../EditDeviceModal/EditDeviceModal";
 
 function DeviceDetails({ heading, devices, rooms, currentUser }) {
   const {
@@ -60,7 +37,6 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
     onOpen: onDeleteOpen,
     onClose: onDeleteClose,
   } = useDisclosure();
-  const { register, handleSubmit, reset } = useForm();
   const [deviceId, setDeviceId] = useState(null);
   const [isSensor, setIsSensor] = useState(false);
   const dispatch = useDispatch();
@@ -85,41 +61,8 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
     onDeleteOpen();
   };
 
-  const onSubmit = async (data) => {
-    const currentDevice = devices.find((device) => device.id === deviceId);
-    const updatedDevice = {
-      deviceName:
-        data.deviceName !== "" ? data.deviceName : currentDevice.deviceName,
-      room: data.room || currentDevice.room,
-      ...(isSensor && {
-        unit: data.unit || currentDevice.unit,
-        maxValue: data.maxValue || currentDevice.maxValue,
-      }),
-    };
-    if (
-      updatedDevice.deviceName === currentDevice.deviceName &&
-      updatedDevice.room === currentDevice.room &&
-      (!isSensor ||
-        (updatedDevice.unit === currentDevice.unit &&
-          updatedDevice.maxValue === currentDevice.maxValue))
-    ) {
-      onEditClose();
-      return;
-    }
-    dispatch(
-      updateDevice({ currentUser, deviceId, isSensor, data: updatedDevice })
-    ).then(() => {
-      setTimeout(() => dispatch(deviceHideAlert()), 4000);
-      reset();
-    });
-    onEditClose();
-  };
-
-  const handleConfirmDelete = async () => {
-    dispatch(deleteDevice({ currentUser, deviceId })).then(() => {
-      setTimeout(() => dispatch(deviceHideAlert()), 4000);
-    });
-    onDeleteClose();
+  const handleAddedDevice = () => {
+    dispatch(getDevices(currentUser));
   };
 
   return (
@@ -229,134 +172,30 @@ function DeviceDetails({ heading, devices, rooms, currentUser }) {
             <Text color="white" textAlign="center">
               There are currently no devices added!
             </Text>
-            <AddDevice></AddDevice>
+            <AddDevice onDeviceAdded={handleAddedDevice} />
           </Flex>
         )}
-        <Modal
-          isOpen={isEditOpen}
-          onClose={() => {
-            onEditClose();
-            reset();
-          }}
-        >
-          <ModalOverlay />
-          <form onSubmit={handleSubmit((data) => onSubmit(data))}>
-            <ModalContent maxW="90%">
-              <ModalHeader>Edit Device</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <FormLabel>Device name</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Enter new widget name"
-                  {...register("deviceName")}
-                />
-                <FormLabel>Device location</FormLabel>
-                {rooms.length > 0 ? (
-                  <RadioGroup>
-                    <HStack>
-                      {rooms.map((room) => (
-                        <Radio
-                          key={room.id}
-                          value={room.name}
-                          {...register("room")}
-                        >
-                          {room.name.charAt(0).toUpperCase() +
-                            room.name.slice(1)}
-                        </Radio>
-                      ))}
-                      <Radio value={"none"} {...register("room")}>
-                        None
-                      </Radio>
-                    </HStack>
-                  </RadioGroup>
-                ) : (
-                  <Text>Currently there are no rooms in the floor plan.</Text>
-                )}
-                {isSensor && (
-                  <React.Fragment>
-                    <FormLabel>Units</FormLabel>
-                    <Input
-                      type="text"
-                      placeholder="Enter units"
-                      {...register("unit")}
-                    />
-                    <FormLabel>Max value</FormLabel>
-                    <Input
-                      type="text"
-                      placeholder="Enter max value"
-                      {...register("maxValue")}
-                    />
-                  </React.Fragment>
-                )}
-              </ModalBody>
-
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onEditClose}>
-                  Cancel
-                </Button>
-                <Button variant="ghost" type="submit">
-                  Update
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </form>
-        </Modal>
-        <AlertDialog
-          isOpen={isDeleteOpen}
-          leastDestructiveRef={cancelRef}
-          onClose={onDeleteClose}
-        >
-          <AlertDialogOverlay>
-            <AlertDialogContent>
-              <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                Delete device
-              </AlertDialogHeader>
-
-              <AlertDialogBody>
-                Are you sure? You can't undo this action afterwards.
-              </AlertDialogBody>
-
-              <AlertDialogFooter>
-                <Button ref={cancelRef} onClick={onDeleteClose}>
-                  Cancel
-                </Button>
-                <Button colorScheme="red" onClick={handleConfirmDelete} ml={3}>
-                  Delete
-                </Button>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialogOverlay>
-        </AlertDialog>
+        <EditDeviceModal
+          isEditOpen={isEditOpen}
+          onEditClose={onEditClose}
+          deviceId={deviceId}
+          currentUser={currentUser}
+          isSensor={isSensor}
+          rooms={rooms}
+          devices={devices}
+        />
+        <DeleteDeviceAlert
+          isDeleteOpen={isDeleteOpen}
+          cancelRef={cancelRef}
+          onDeleteClose={onDeleteClose}
+          currentUser={currentUser}
+          deviceId={deviceId}
+        />
         {updatedDeviceSuccessAlert && (
-          <Box
-            position="fixed"
-            top="0"
-            left="0"
-            w="100%"
-            bg="green.400"
-            textAlign="center"
-            p={3}
-            className="drop-down"
-          >
-            Device was updated{" "}
-            <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
-          </Box>
+          <SuccessAlertBox alertText={"Device was updated"} />
         )}
         {deletedDeviceSuccessAlert && (
-          <Box
-            position="fixed"
-            top="0"
-            left="0"
-            w="100%"
-            bg="green.400"
-            textAlign="center"
-            p={3}
-            className="drop-down"
-          >
-            Device was deleted{" "}
-            <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
-          </Box>
+          <SuccessAlertBox alertText={"Device was deleted"} />
         )}
       </React.Fragment>
     </MainContent>

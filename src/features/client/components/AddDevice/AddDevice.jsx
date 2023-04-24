@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Modal,
@@ -14,20 +14,21 @@ import {
   HStack,
   Radio,
   Input,
+  Box,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { addDevice } from "../../../../store/reducers/deviceSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { typeMock } from "../../mocks/typeMock";
 import { UserAuth } from "../../../../context/AuthContext";
-import { useSelector } from "react-redux";
 import { getRooms } from "../../../../store/reducers/roomSlice";
-import { deviceHideAlert } from "../../../../store/reducers/deviceSlice";
-import { Box } from "@chakra-ui/react";
+import {
+  deviceHideAlert,
+  addDevice,
+} from "../../../../store/reducers/deviceSlice";
+import { useForm } from "react-hook-form";
+import SuccessAlertBox from "../SuccessAlertBox/SuccessAlertBox";
 import "./AddDevice.css";
 
-function AddDevice() {
+function AddDevice({ onDeviceAdded }) {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deviceType, setDeviceType] = useState("switch");
@@ -61,6 +62,7 @@ function AddDevice() {
       })
     ).then(() => {
       setTimeout(() => dispatch(deviceHideAlert()), 4000);
+      onDeviceAdded();
       reset();
     });
     onClose();
@@ -165,19 +167,7 @@ function AddDevice() {
         </form>
       </Modal>
       {addedDeviceSuccessAlert && (
-        <Box
-          position="fixed"
-          top="0"
-          left="0"
-          w="100%"
-          bg="green.400"
-          textAlign="center"
-          p={3}
-          className="drop-down"
-        >
-          Device was added{" "}
-          <strong style={{ padding: 0, margin: 0 }}>successfully</strong>!
-        </Box>
+        <SuccessAlertBox alertText={"Device was added"} />
       )}
     </React.Fragment>
   );

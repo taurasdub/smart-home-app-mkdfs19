@@ -1,13 +1,13 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import MainContent from "../../layouts/MainContentLayout/MainContent";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import DeviceControl from "../DeviceControl/DeviceControl";
 import { useDispatch, useSelector } from "react-redux";
 import { getDevices } from "../../../../store/reducers/deviceSlice";
 import { getRooms } from "../../../../store/reducers/roomSlice";
-import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
 import { UserAuth } from "../../../../context/AuthContext";
+import AddFloorPlan from "../AddFloorPlan/AddFloorPlan";
+import DeviceControl from "../DeviceControl/DeviceControl";
+import MainContent from "../../layouts/MainContentLayout/MainContent";
 
 function FloorPlan() {
   const dispatch = useDispatch();
@@ -15,6 +15,11 @@ function FloorPlan() {
 
   const rooms = useSelector((state) => state.room.rooms);
   const devices = useSelector((state) => state.device.devices);
+
+  useEffect(() => {
+    dispatch(getRooms(user));
+    dispatch(getDevices(user));
+  }, [user]);
 
   const navigate = useNavigate();
 

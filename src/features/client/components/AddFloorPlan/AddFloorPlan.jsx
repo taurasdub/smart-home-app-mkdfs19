@@ -13,14 +13,14 @@ import {
   Input,
   Flex,
   Box,
-  Link,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-
 import { useDispatch } from "react-redux";
-import { addFloorPlan } from "../../../../store/reducers/roomSlice";
 import { UserAuth } from "../../../../context/AuthContext";
-import { roomHideAlert } from "../../../../store/reducers/roomSlice";
+import {
+  addFloorPlan,
+  roomHideAlert,
+} from "../../../../store/reducers/roomSlice";
+import { useForm } from "react-hook-form";
 
 function AddFloorPlan({ onFloorPlanAdded }) {
   const dispatch = useDispatch();
