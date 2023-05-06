@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import MainContent from "../../layouts/MainContentLayout/MainContent";
 import { UserAuth } from "../../../../context/AuthContext";
 import { Button, Heading } from "@chakra-ui/react";
@@ -18,9 +18,11 @@ import {
   deleteFloorPlan,
   roomHideAlert,
 } from "../../../../store/reducers/roomSlice";
+import { ThemeContext } from "../../../../App";
 
 function UserSettings() {
   const { user } = UserAuth();
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const dispatch = useDispatch();
@@ -31,17 +33,33 @@ function UserSettings() {
     });
     onClose();
   };
-
   return (
     <MainContent height="750px">
-      <Heading color="white">Account Information</Heading>
-      <Text color="white" mt={2} mb={2}>
+      <Heading color={theme === "dark" ? "white" : "black"}>
+        Account Information
+      </Heading>
+      <Text color={theme === "dark" ? "white" : "black"} mt={2} mb={2}>
         Email: {user.email}
       </Text>
       <Divider orientation="horizontal" color="white" mb={3} mt={3} />
-      <Heading color="white">Account Actions</Heading>
-      <Button onClick={onOpen} mt={2} width="200px">
+      <Heading color={theme === "dark" ? "white" : "black"}>
+        Account Actions
+      </Heading>
+      <Button
+        onClick={onOpen}
+        mt={2}
+        width="200px"
+        colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+        mr={2}
+      >
         Delete Current Floor Plan
+      </Button>
+      <Button
+        mt={2}
+        colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+        onClick={toggleTheme}
+      >
+        Use {theme === "light" ? "dark" : "light"} theme
       </Button>
       <AlertDialog
         isOpen={isOpen}

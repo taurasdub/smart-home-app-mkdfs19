@@ -4,13 +4,12 @@ import { Box } from "@chakra-ui/react";
 function MainContent({ children, height, ...props }) {
   return (
     <Box
-      bg="#2A3F74"
       borderRadius="10px"
-      className="container"
-      minH={height}
+      className="main-container"
       maxW="1240px"
       padding="25px"
-      mb={5}
+      height={{ base: "47vh", sm: "70vh", md: "770px" }}
+      overflow="auto"
       {...props}
     >
       {children}

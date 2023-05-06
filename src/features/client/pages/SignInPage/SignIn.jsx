@@ -52,13 +52,7 @@ export default function SignIn() {
           <Heading fontSize={"4xl"} color="white" textAlign="center">
             Sign in to your account
           </Heading>
-          <Text fontSize={"lg"} color={"gray.400"}>
-            to enjoy all of our{" "}
-            <RouterLink to="/features">
-              <ChakraLink color={"blue.400"}>features</ChakraLink>
-            </RouterLink>{" "}
-            ✌️
-          </Text>
+
           <RouterLink color={"blue.400"} to="/register" variant="body2">
             <ChakraLink color={"blue.400"}>
               Don't have an account? Sign Up

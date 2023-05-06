@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserAuth } from "../../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +15,12 @@ import { getRooms } from "../../../../store/reducers/roomSlice";
 import { getDevices } from "../../../../store/reducers/deviceSlice";
 import AddDevice from "../../components/AddDevice/AddDevice";
 import "./index.scss";
+import { ThemeContext } from "../../../../App";
 
 function Header({ user }) {
   let currentHour = new Date().getHours();
   const { logout } = UserAuth();
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,8 +38,16 @@ function Header({ user }) {
     dispatch(getDevices(user));
   };
 
+  console.log(theme);
+
   return (
-    <Box bg="#2A3F74" borderRadius="10px" padding="20px" w="100%">
+    <Box
+      borderRadius="10px"
+      padding="20px"
+      w="100%"
+      marginTop="20px"
+      className="header-container"
+    >
       {isLargerThan975 ? (
         <Grid
           templateRows="repeat(2, 1fr)"
@@ -46,7 +56,7 @@ function Header({ user }) {
           h="100%"
         >
           <GridItem rowSpan={1} colSpan={7}>
-            <Heading color="white">
+            <Heading>
               Good
               {currentHour >= 3 && currentHour <= 11
                 ? " morning ☕"
@@ -65,7 +75,13 @@ function Header({ user }) {
             flexDir="column"
           >
             <Link to="/settings">
-              <Button w="100px"> Settings</Button>
+              <Button
+                w="100px"
+                colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+              >
+                {" "}
+                Settings
+              </Button>
             </Link>
             <Button onClick={handleLogOut} w="100px" colorScheme="red">
               Log out
@@ -74,16 +90,36 @@ function Header({ user }) {
           <GridItem rowSpan={1} colSpan={7}>
             <Box className="buttons">
               <Link to="/">
-                <Button w="100px">Floor plan</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Floor plan
+                </Button>
               </Link>
               <Link to="/all-devices">
-                <Button w="100px">All devices</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  All devices
+                </Button>
               </Link>
               <Link to="/switches">
-                <Button w="100px">Switches</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Switches
+                </Button>
               </Link>
               <Link to="/sensors">
-                <Button w="100px">Sensors</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Sensors
+                </Button>
               </Link>
               <AddDevice onDeviceAdded={handleAddedDevice} />
             </Box>
@@ -92,7 +128,7 @@ function Header({ user }) {
       ) : (
         <React.Fragment>
           <Box display="flex" flexDir="column" gap="10px">
-            <Heading color="white">
+            <Heading>
               Good
               {currentHour >= 3 && currentHour <= 11
                 ? " morning ☕"
@@ -109,20 +145,46 @@ function Header({ user }) {
               justifyContent="center"
             >
               <Link to="/">
-                <Button w="100px">Floor plan</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Floor plan
+                </Button>
               </Link>
               <Link to="/all-devices">
-                <Button w="100px">All devices</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  All devices
+                </Button>
               </Link>
               <Link to="/switches">
-                <Button w="100px">Switches</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Switches
+                </Button>
               </Link>
               <Link to="/sensors">
-                <Button w="100px">Sensors</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  Sensors
+                </Button>
               </Link>
               <AddDevice onDeviceAdded={handleAddedDevice} />
               <Link to="/settings">
-                <Button w="100px"> Settings</Button>
+                <Button
+                  w="100px"
+                  colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+                >
+                  {" "}
+                  Settings
+                </Button>
               </Link>
               <Button onClick={handleLogOut} w="100px" colorScheme="red">
                 Log out

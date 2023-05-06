@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Button,
   Modal,
@@ -21,6 +21,7 @@ import {
   roomHideAlert,
 } from "../../../../store/reducers/roomSlice";
 import { useForm } from "react-hook-form";
+import { ThemeContext } from "../../../../App";
 
 function AddFloorPlan({ onFloorPlanAdded }) {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function AddFloorPlan({ onFloorPlanAdded }) {
   const { register, handleSubmit } = useForm();
   const [rooms, setRooms] = useState([{ name: "" }]);
   const { user } = UserAuth();
+  const { theme } = useContext(ThemeContext);
 
   const onSubmit = async () => {
     const newRooms = rooms.map((room) => ({ name: room.name }));
@@ -59,7 +61,12 @@ function AddFloorPlan({ onFloorPlanAdded }) {
 
   return (
     <React.Fragment>
-      <Button onClick={onOpen}>Add Floor Plan</Button>
+      <Button
+        onClick={onOpen}
+        colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+      >
+        Add Floor Plan
+      </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

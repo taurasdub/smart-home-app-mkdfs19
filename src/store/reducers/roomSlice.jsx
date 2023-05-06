@@ -4,7 +4,6 @@ import {
   deleteDoc,
   collection,
   getDocs,
-  writeBatch,
   query,
   where,
   updateDoc,
@@ -60,11 +59,7 @@ export const deleteFloorPlan = createAsyncThunk(
         }
         await deleteDoc(doc.ref);
       }
-
       return;
-      // snapshot.forEach((doc) => {
-      //   deleteDoc(doc.ref);
-      // });
     } catch (error) {
       throw error;
     }

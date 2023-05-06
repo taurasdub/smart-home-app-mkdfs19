@@ -35,10 +35,10 @@ const Weather = () => {
 
   return (
     <Box
-      bg="#2A3F74"
       borderRadius="10px"
       padding="20px"
       className="weather-container"
+      marginTop="20px"
     >
       {weatherData ? (
         <div>

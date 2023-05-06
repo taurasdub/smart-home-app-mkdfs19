@@ -1,0 +1,38 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+div#root {
+  height: 100%; /* remove this line to see div.app is no more 100% height */
+}
+
+div.app {
+  height: 100%;
+  background-color: cornsilk;
+}
+#light {
+  background-color: #d2d3db;
+  padding-bottom: 17px;
+}
+
+#light .main-container,
+#light .weather-container,
+#light .header-container {
+  background-color: #fafafa;
+}
+
+#dark {
+  background-color: #18122b !important;
+  padding-bottom: 17px;
+}
+
+#dark .main-container,
+#dark .weather-container,
+#dark .header-container {
+  background-color: #443c68;
+  color: white;
+}

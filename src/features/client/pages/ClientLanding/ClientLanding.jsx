@@ -31,12 +31,7 @@ function ClientLanding() {
   return (
     <Container maxW="1240px">
       {user && (
-        <Flex
-          flexDir={isLargerThan500 ? "row" : "column"}
-          mt={5}
-          mb={5}
-          gap={5}
-        >
+        <Flex flexDir={isLargerThan500 ? "row" : "column"} mb={5} gap={5}>
           <Header user={user} />
           <Weather />
         </Flex>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   Modal,
@@ -27,6 +27,7 @@ import {
 import { useForm } from "react-hook-form";
 import SuccessAlertBox from "../SuccessAlertBox/SuccessAlertBox";
 import "./AddDevice.css";
+import { ThemeContext } from "../../../../App";
 
 function AddDevice({ onDeviceAdded }) {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function AddDevice({ onDeviceAdded }) {
   const [deviceType, setDeviceType] = useState("switch");
   const { register, handleSubmit, reset } = useForm();
   const { user } = UserAuth();
+  const { theme } = useContext(ThemeContext);
   const addedDeviceSuccessAlert = useSelector(
     (state) => state.device.addedDeviceSuccessAlert
   );
@@ -80,7 +82,12 @@ function AddDevice({ onDeviceAdded }) {
 
   return (
     <React.Fragment>
-      <Button onClick={onOpen} w="100px" marginRight="10px">
+      <Button
+        onClick={onOpen}
+        w="100px"
+        marginRight="10px"
+        colorScheme={theme === "dark" ? "blackAlpha" : "gray"}
+      >
         Add Device
       </Button>
       <Modal isOpen={isOpen} onClose={handleClose}>

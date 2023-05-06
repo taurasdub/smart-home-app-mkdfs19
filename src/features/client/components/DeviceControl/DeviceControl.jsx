@@ -16,7 +16,6 @@ function DeviceControl({ mqttDevice }) {
     mqttClient.on("connect", () => {
       setDeviceState("off");
       console.log("connected");
-      console.log(deviceState);
       mqttClient.subscribe(MQTT_TOPIC);
     });
     mqttClient.on("message", (topic, message) => {
@@ -33,7 +32,7 @@ function DeviceControl({ mqttDevice }) {
         client.end();
       }
     };
-  }, [MQTT_TOPIC]);
+  }, []);
 
   const handleButtonClick = () => {
     const newDeviceState = deviceState === "off" ? "on" : "off";
