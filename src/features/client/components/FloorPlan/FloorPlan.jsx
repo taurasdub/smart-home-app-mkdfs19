@@ -34,7 +34,6 @@ function FloorPlan() {
       alignItems={rooms.length > 0 ? "normal" : "center"}
       flexWrap="wrap"
       paddingLeft={{ base: "60px", sm: "80px", md: "60px" }}
-      overflow-y="scroll"
     >
       {rooms.length > 0 ? (
         rooms.map((room) => (
