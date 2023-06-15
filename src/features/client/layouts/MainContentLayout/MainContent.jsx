@@ -8,7 +8,7 @@ function MainContent({ children, height, ...props }) {
       className="main-container"
       maxW="1240px"
       padding="25px"
-      height={{ base: "47vh", sm: "70vh", md: "757px" }}
+      height={{ base: "47vh", sm: "100vh", md: "84vh" }}
       overflow="auto"
       {...props}
     >

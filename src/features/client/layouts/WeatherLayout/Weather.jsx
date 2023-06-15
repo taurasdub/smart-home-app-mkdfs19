@@ -38,7 +38,7 @@ const Weather = () => {
       borderRadius="10px"
       padding="20px"
       className="weather-container"
-      marginTop="20px"
+      marginTop="11px"
     >
       {weatherData ? (
         <div>

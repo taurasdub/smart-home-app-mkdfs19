@@ -45,7 +45,7 @@ function Header({ user }) {
       borderRadius="10px"
       padding="20px"
       w="100%"
-      marginTop="20px"
+      marginTop="11px"
       className="header-container"
     >
       {isLargerThan975 ? (
